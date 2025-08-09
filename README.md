@@ -14,7 +14,7 @@
 ## Запуск локально
 
 ### 1. Клонирование репозитория
-```bash
+
 git clone https://github.com/IlHope/Stripe.git
 cd repo
 
