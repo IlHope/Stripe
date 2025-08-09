@@ -78,9 +78,9 @@ WSGI_APPLICATION = 'stripepay.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB', default='your_db_name'),
-        'USER': config('POSTGRES_USER', default='your_db_user'),
-        'PASSWORD': config('POSTGRES_PASSWORD', default='your_password'),
+        'NAME': config('POSTGRES_DB', default='stripe'),
+        'USER': config('POSTGRES_USER', default='admin'),
+        'PASSWORD': config('POSTGRES_PASSWORD', default='admin'),
         'HOST': config('POSTGRES_HOST', default='localhost'),
         'PORT': config('POSTGRES_PORT', default='5432'),
     }
