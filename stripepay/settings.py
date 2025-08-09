@@ -137,3 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLISHABLE_KEY')
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://stripe-production-d3eb.up.railway.app'
+]
