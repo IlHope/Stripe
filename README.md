@@ -12,7 +12,7 @@
 ---
 
 ## Запуск локально
-
+```
 ### 1. Клонирование репозитория
 
 git clone https://github.com/IlHope/Stripe.git
@@ -37,11 +37,11 @@ python manage.py createsuperuser
 
 ### 6. Запуск сервера
 python manage.py runserver
-
+```
 ---
 
 ## Демо-версия на Railway
 Проект задеплоен на Railway.
 URL: https://stripe-production-d3eb.up.railway.app/
-Админка: https://yourproject.railway.app/admin
+Админка: https://stripe-production-d3eb.up.railway.app/admin
 Логин/пароль: admin/admin
