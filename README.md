@@ -42,6 +42,6 @@ python manage.py runserver
 
 ## Демо-версия на Railway
 Проект задеплоен на Railway.
-URL: https://yourproject.railway.app
+URL: https://stripe-production-d3eb.up.railway.app/
 Админка: https://yourproject.railway.app/admin
 Логин/пароль: admin/admin
