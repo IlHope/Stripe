@@ -10,4 +10,4 @@ COPY . .
 ENV PYTHONDONTWRITEBYCODE 1
 ENV PYTHONUNBUFFERED 1
 
-CMD bash -c "python manage.py migrate && gunicorn stripepay.wsgi:application --bind 0.0.0.0:8000"
+CMD ["sh", "-c", "python manage.py migrate && gunicorn hammer.wsgi:application --bind 0.0.0.0:8000"]
