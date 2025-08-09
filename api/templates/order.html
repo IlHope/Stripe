@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Ваш заказ:</h1>
+    <ul>
+        {% for item in items %}
+            <li>{{ item.name }} - {{ item.price }}</li>
+        {% endfor %}
+    </ul>
+    <p><strong>Общая сумма</strong> {{ total }}</p>
+
+    <a href="{% url 'order-payment-page' order.id %}">Купить</a>
+</body>
+</html>

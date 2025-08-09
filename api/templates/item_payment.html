@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Оплата</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>Оплата товара</h1>
+    <p>Сумма: {{ amount }} {{ currency|upper }}</p>
+
+    <form id="payment-form">
+        <div id="card-element"></div>
+        <button id="submit">Оплатить</button>
+        <div id="payment-result"></div>
+    </form>
+
+    <script>
+        const stripe = Stripe("{{ stripe_public_key }}");
+        const elements = stripe.elements();
+        const card = elements.create("card");
+        card.mount("#card-element");
+
+        const form = document.getElementById("payment-form");
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const response = await fetch("{% url 'create-item-payment-intent' item.id %}", {method: "POST"});
+            const data = await response.json();
+
+            if (data.error) {
+                document.getElementById("payment-result").innerText = data.error;
+                return;
+            }
+
+            const clientSecret = data.clientSecret;
+
+            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+                payment_method: {
+                    card: card
+                }
+            });
+
+            if (error) {
+                document.getElementById("payment-result").innerText = error.message;
+            } else if (paymentIntent.status === "succeeded") {
+                document.getElementById("payment-result").innerText = "Оплата прошла успешно!";
+                window.location.href = "/success";
+            }
+        });
+    </script>
+</body>
+</html>

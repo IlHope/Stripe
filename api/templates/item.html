@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ item.name }}</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+    <h1>{{ item.name }}</h1>
+    <p>{{ item.description }}</p>
+    <p><strong>Price:</strong> {{ item.price }} {{ item.currency|upper }}</p>
+
+    <a href="{% url 'item-payment-page' item.id %}">Купить</a>
+</body>
+</html>
