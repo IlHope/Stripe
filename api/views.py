@@ -59,13 +59,6 @@ class OrderPaymentPageView(View):
         discount_amount_cents = 0
 
         try:
-            tax_rate = stripe.TaxRate.retrieve(order.tax.stripe_tax_rate_id)
-            tax_percent = tax_rate.percentage or 0
-            tax_amount_cents = int(base_amount_cents * (tax_percent / 100))
-        except Exception:
-            tax_amount_cents = 0
-
-        try:
             coupon = stripe.Coupon.retrieve(order.discount.stripe_promotion_code_id)
             if coupon.percent_off:
                 discount_amount_cents = int(base_amount_cents * (coupon.percent_off / 100))
@@ -74,10 +67,18 @@ class OrderPaymentPageView(View):
         except Exception:
             discount_amount_cents = 0
 
-        final_amount_cents = base_amount_cents + tax_amount_cents - discount_amount_cents
-        if final_amount_cents < 0:
-            final_amount_cents = 0
+        base_minus_discount_cents = base_amount_cents - discount_amount_cents
+        if base_minus_discount_cents < 0:
+            base_minus_discount_cents = 0
 
+        try:
+            tax_rate = stripe.TaxRate.retrieve(order.tax.stripe_tax_rate_id)
+            tax_percent = tax_rate.percentage or 0
+            tax_amount_cents = int(base_minus_discount_cents * (tax_percent / 100))
+        except Exception:
+            tax_amount_cents = 0
+
+        final_amount_cents = base_minus_discount_cents + tax_amount_cents
         final_amount = final_amount_cents / 100
 
         return render(request, 'order_payment.html', {
@@ -104,13 +105,6 @@ class CreateOrderPaymentIntentView(View):
         discount_amount_cents = 0
 
         try:
-            tax_rate = stripe.TaxRate.retrieve(order.tax.stripe_tax_rate_id)
-            tax_percent = tax_rate.percentage or 0
-            tax_amount_cents = int(base_amount_cents * (tax_percent / 100))
-        except Exception:
-            tax_amount_cents = 0
-
-        try:
             coupon = stripe.Coupon.retrieve(order.discount.stripe_promotion_code_id)
             if coupon.percent_off:
                 discount_amount_cents = int(base_amount_cents * (coupon.percent_off / 100))
@@ -119,9 +113,18 @@ class CreateOrderPaymentIntentView(View):
         except Exception:
             discount_amount_cents = 0
 
-        final_amount_cents = base_amount_cents + tax_amount_cents - discount_amount_cents
-        if final_amount_cents < 0:
-            final_amount_cents = 0
+        base_minus_discount_cents = base_amount_cents - discount_amount_cents
+        if base_minus_discount_cents < 0:
+            base_minus_discount_cents = 0
+
+        try:
+            tax_rate = stripe.TaxRate.retrieve(order.tax.stripe_tax_rate_id)
+            tax_percent = tax_rate.percentage or 0
+            tax_amount_cents = int(base_minus_discount_cents * (tax_percent / 100))
+        except Exception:
+            tax_amount_cents = 0
+
+        final_amount_cents = base_minus_discount_cents + tax_amount_cents
 
         try:
             intent = stripe.PaymentIntent.create(
