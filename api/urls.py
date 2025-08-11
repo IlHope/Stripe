@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import TemplateView
 from .views import ItemDetailView, ItemPaymentPageView, CreateItemPaymentIntentView, OrderDetailView, OrderPaymentPageView, CreateOrderPaymentIntentView
 
 urlpatterns = [
@@ -8,4 +9,5 @@ urlpatterns = [
     path('order/<int:id>/', OrderDetailView.as_view(), name='order-detail'),
     path('order/<int:id>/payment/', OrderPaymentPageView.as_view(), name='order-payment-page'),
     path('order/<int:id>/create-payment-intent/', CreateOrderPaymentIntentView.as_view(), name='create-order-payment-intent'),
+    path('success/', TemplateView.as_view(template_name="success.html"), name="payment_success"),
 ]
