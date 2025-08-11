@@ -66,12 +66,16 @@ class CreateOrderPaymentIntentView(View):
         order = get_object_or_404(Order, id=id)
         items = order.items.all()
         total_amount = sum([item.price for item in items])
-        currency = order.currency
+        currencies = set(item.currency.lower() for item in items)
+        if len(currencies) > 1:
+            return JsonResponse({'error': 'Products have different currencies'}, status=400)
+        else:
+            currency = currencies.pop()
 
         try:
             intent = stripe.PaymentIntent.create(
                 amount=int(total_amount * 100),
-                currency=currency.lower(),
+                currency=currency,
                 automatic_payment_methods={"enabled": True},
             )
             return JsonResponse({"clientSecret": intent.client_secret})
